@@ -11,6 +11,7 @@
 
 1. `heroku login`
 2. `git push heroku main`
+3. Test: https://ria-weather-app-7df97372efc4.herokuapp.com/
 
 ### original README...
 
