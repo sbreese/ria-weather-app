@@ -19,26 +19,22 @@
           ? 'light-text'
           : 'dark-text'
       "
-    >
-      <div class="temp">{{ Math.round(weather.main.temp) }}°c</div>
-      <div class="weather">{{ weather.weather[0].main }}</div>
-    </div>
+    ></div>
 
     <div class="hourly-box">
-      <h2>Next 5 Hours</h2>
+      <h2>Next Hours</h2>
       <ul>
-        <li v-for="n in 5" :key="n">
-          <span>{{ Math.round(forecast.hourly[n].temp) }}°</span>
+        <li v-for="hour in forecast.hourly">
+          <span>{{ Math.round(hour.temp) }}°</span>
           <div class="percent-rain">
             {{
-              typeof forecast.hourly[n].rain != 'undefined' &&
-              forecast.hourly[n].rain['1h'] != 0
-                ? `${Math.round(forecast.hourly[n].rain['1h'] * 100)}%`
+              typeof hour.rain != 'undefined' && hour.rain['1h'] != 0
+                ? `${Math.round(hour.rain['1h'] * 100)}%`
                 : '0%'
             }}
           </div>
-          <img :src="getWeatherIcon(forecast.hourly[n].weather[0].icon)" />
-          <span>{{ getFormattedTime(forecast.hourly[n].dt) }}</span>
+          <img :src="getWeatherIcon(hour.weather[0].icon)" />
+          <span>{{ getFormattedTime(hour.dt) }}</span>
         </li>
       </ul>
     </div>
@@ -204,6 +200,7 @@ export default {
   padding: 0;
   display: flex;
   column-gap: 10px;
+  overflow-x: scroll;
 }
 .hourly-box li {
   float: left;

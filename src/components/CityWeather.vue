@@ -123,7 +123,7 @@ export default defineComponent({
         Toronto: { lat: 43.653, lon: -79.383 },
         Sydney: { lat: -33.869, lon: 151.209 }
       },
-      makeLiveAPIcall: true,
+      makeLiveAPIcall: false,
       showWarning: false
     })
 
@@ -218,9 +218,7 @@ export default defineComponent({
 
 <style scoped>
 main {
-  background-image: url('../assets/cold-bg.jpg');
-  background-size: cover;
-  background-position: bottom;
+  background-color: #add8e6;
   transition: 0.4s;
 
   min-height: 100vh;
@@ -228,7 +226,7 @@ main {
 }
 
 main.warm {
-  background-image: url('../assets/warm-bg.jpg');
+  background-color: #ba55d3;
 }
 
 .tabs__header {
@@ -239,6 +237,7 @@ main.warm {
   column-gap: 10px;
 }
 .tabs__header li {
+  border-radius: 10px;
   float: left;
   list-style: none;
   text-align: center;
@@ -273,13 +272,11 @@ main.warm {
 
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
   background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 0px 16px 0px 16px;
-  transition: 0.4s;
+  border-radius: 20px;
 }
 .search-box .search-bar:focus {
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25);
   background-color: rgba(255, 255, 255, 0.75);
-  border-radius: 16px 0px 16px 0px;
 }
 .refresh-box {
   text-align: center;
