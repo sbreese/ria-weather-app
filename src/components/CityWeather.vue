@@ -123,7 +123,7 @@ export default defineComponent({
         Toronto: { lat: 43.653, lon: -79.383 },
         Sydney: { lat: -33.869, lon: 151.209 }
       },
-      makeLiveAPIcall: false,
+      makeLiveAPIcall: true,
       showWarning: false
     })
 
