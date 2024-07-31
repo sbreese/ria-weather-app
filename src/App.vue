@@ -1,30 +1,78 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div id="app">
+    <header class="header">
+      <div class="nav-container">
+        <span>Steve's Simple Weather App</span>
+        <span @click="performSearchClick()"><SearchIcon /></span>
+      </div>
+    </header>
+
+    <CityWeather
+      :performRefresh="performRefresh"
+      :performSearch="performSearch"
+      @resetSearch="handleResetSearch"
+    >
+      <CitySearchTab title="Rio de Janeiro"></CitySearchTab>
+      <CitySearchTab title="Beijing"></CitySearchTab>
+      <CitySearchTab title="Los Angeles"></CitySearchTab>
+    </CityWeather>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<script>
+import { defineComponent } from 'vue'
+import CitySearchTab from './components/CitySearchTab.vue'
+import CityWeather from './components/CityWeather.vue'
+import SearchIcon from './components/SearchIcon.vue'
+
+export default defineComponent({
+  name: 'app',
+  components: {
+    CitySearchTab,
+    CityWeather,
+    SearchIcon
+  },
+  data() {
+    return {
+      performSearch: false
+    }
+  },
+  methods: {
+    performRefreshClick() {
+      this.performRefreshCalled = !this.performRefreshCalled
+    },
+    performSearchClick() {
+      this.performSearch = !this.performSearch
+    },
+    handleResetSearch() {
+      this.performSearch = false
+    }
+  }
+})
+</script>
+
+<style>
+#app {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.25),
+    rgba(0, 0, 0, 0.75)
+  );
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+header {
+  background: #4d4ddb;
+  color: white;
+
+  padding: 0.5rem 0;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 90%;
+  margin: 0 auto;
 }
 </style>
