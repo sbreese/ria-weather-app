@@ -139,7 +139,7 @@ export default defineComponent({
     }
 
     const fetchWeather = city => {
-      state.currentCity = city
+      state.currentCity = city.trim()
 
       if (Object.keys(state.geolocation).includes(state.currentCity)) {
         state.showWarning = false
