@@ -156,7 +156,7 @@ export default defineComponent({
               `${state.forecast_url_base}onecall?lat=${lat}&lon=${lon}&units=metric&appid=${state.api_key}`
             )
           ])
-            // Get a JSON objec from each of the responses
+            // Get JSON objects from each of the responses
             .then(responses =>
               Promise.all(responses.map(response => response.json()))
             )
@@ -168,6 +168,7 @@ export default defineComponent({
 
         state.query = ''
       } else {
+        // user entered a city the app doesn't have geolocation for
         state.showWarning = true
       }
     }
