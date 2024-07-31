@@ -2,11 +2,7 @@
   <div class="weather-wrap" v-if="typeof weather.main != 'undefined'">
     <div
       class="location-box"
-      :class="
-        typeof weather.main != 'undefined' && weather.main.temp > 17
-          ? 'light-text'
-          : 'dark-text'
-      "
+      :class="shouldDisplayLightMode(weather) ? 'light-text' : 'dark-text'"
     >
       <div class="location">{{ weather.name }}, {{ weather.sys.country }}</div>
       <div class="date">{{ getFormattedCurrentDate() }}</div>
@@ -14,15 +10,13 @@
 
     <div
       class="weather-box"
-      :class="
-        typeof weather.main != 'undefined' && weather.main.temp > 17
-          ? 'light-text'
-          : 'dark-text'
-      "
+      :class="shouldDisplayLightMode(weather) ? 'light-text' : 'dark-text'"
     ></div>
 
     <div class="hourly-box">
-      <h2>Next Hours</h2>
+      <h2 :class="shouldDisplayLightMode(weather) ? 'light-text' : 'dark-text'">
+        Next Hours
+      </h2>
       <ul>
         <li v-for="hour in forecast.hourly">
           <span>{{ Math.round(hour.temp) }}°</span>
@@ -39,7 +33,9 @@
       </ul>
     </div>
     <div class="daily-box">
-      <h2>Next 5 Days</h2>
+      <h2 :class="shouldDisplayLightMode(weather) ? 'light-text' : 'dark-text'">
+        Next 5 Days
+      </h2>
       <ul>
         <li v-for="o in 5" :key="o">
           <div>
@@ -140,6 +136,9 @@ export default {
       let month = months[d.getMonth()]
 
       return `${day}, ${month} ${date}`
+    },
+    shouldDisplayLightMode(weather) {
+      return typeof weather.main != 'undefined' && weather.main.temp > 17
     }
   }
 }
@@ -179,10 +178,16 @@ export default {
   text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
 }
 
-.dark-text > div {
+h2 {
+  margin: 8px 0;
+}
+
+.dark-text > div,
+h2.dark-text {
   color: #333333;
 }
-.light-text > div {
+.light-text > div,
+h2.light-text {
   color: #fff;
 }
 
@@ -242,11 +247,6 @@ export default {
   display: flex;
   flex-basis: 100%;
   justify-content: space-between;
-}
-
-h2 {
-  color: white;
-  margin: 8px 0;
 }
 
 .last-updated {
