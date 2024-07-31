@@ -91,7 +91,7 @@ export default defineComponent({
       tabs: [],
       count: 0,
       api_key: 'd6929a705065e90eb1385ccbcb3a15ba',
-      weather_url_base: 'https://api.openweathermap.org/data/2.5/', //orig to delete
+      weather_url_base: 'https://api.openweathermap.org/data/2.5/', // contains city name & country
       forecast_url_base: 'https://api.openweathermap.org/data/3.0/',
       query: '',
       currentCity: '',
@@ -147,7 +147,7 @@ export default defineComponent({
         const lon = state.geolocation[state.currentCity].lon
 
         if (state.makeLiveAPIcall) {
-          // Wait for both current & forecast weather APIs to resolve
+          // Wait for both v2.5 & v3.0 weather APIs to resolve
           Promise.all([
             fetch(
               `${state.weather_url_base}weather?q=${state.currentCity}&units=metric&appid=${state.api_key}`

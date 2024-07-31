@@ -9,7 +9,7 @@
       "
     >
       <div class="location">{{ weather.name }}, {{ weather.sys.country }}</div>
-      <div class="date">{{ dateBuilder() }}</div>
+      <div class="date">{{ getFormattedCurrentDate() }}</div>
     </div>
 
     <div
@@ -47,7 +47,7 @@
           </div>
           <div class="daily-summary">
             <div>
-              <strong>{{ getFormattedDate(forecast.daily[o].dt) }}</strong>
+              <strong>{{ formattedTimestamp(forecast.daily[o].dt) }}</strong>
             </div>
             <div>{{ forecast.daily[o].summary }}</div>
           </div>
@@ -60,7 +60,7 @@
     </div>
 
     <div class="last-updated">
-      Last updated on {{ getFormattedDate(weather.dt) }}
+      Last updated on {{ formattedTimestamp(weather.dt) }}
       {{ getFormattedTime(weather.dt) }}
     </div>
   </div>
@@ -103,13 +103,13 @@ export default {
 
       return formattedTime
     },
-    getFormattedDate(unix_timestamp) {
+    formattedTimestamp(unix_timestamp) {
       const date = new Date(unix_timestamp * 1000)
 
       // returns formatted date without year
       return date.toDateString().replace(/([A-Z])|\b[0-9]{4}\b/g, ' $1')
     },
-    dateBuilder() {
+    getFormattedCurrentDate() {
       let d = new Date()
       let months = [
         'January',
