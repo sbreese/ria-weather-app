@@ -33,6 +33,14 @@
         tabindex="0"
         v-focus
       />
+      <div
+        v-show="showWarning && query && performSearch"
+        class="alert alert-warning"
+      >
+        {{ currentCity }} is not yet supported. Please try one of the following
+        cities:
+        {{ Object.keys(geolocation).join(', ') }}
+      </div>
     </div>
 
     <div class="refresh-box">
@@ -44,7 +52,6 @@
 </template>
 
 <script>
-// const closest_match = require('closest-match')
 import mockResponse from '../assets/mock_weather_forcast_response.json'
 import {
   defineComponent,
@@ -93,6 +100,7 @@ export default defineComponent({
       geolocation: {
         Beijing: { lat: 39.904, lon: 116.407 },
         Berlin: { lat: 52.52, lon: 13.405 },
+        'Buena Park': { lat: 33.867, lon: -117.998 },
         Cairo: { lat: 30.044, lon: 31.236 },
         Chicago: { lat: 41.878, lon: -87.629 },
         Delhi: { lat: 28.704, lon: -77.102 },
@@ -115,7 +123,8 @@ export default defineComponent({
         Toronto: { lat: 43.653, lon: -79.383 },
         Sydney: { lat: -33.869, lon: 151.209 }
       },
-      makeLiveAPIcall: true
+      makeLiveAPIcall: true,
+      showWarning: false
     })
 
     provide('TabsProvider', state)
@@ -132,29 +141,35 @@ export default defineComponent({
     const fetchWeather = city => {
       state.currentCity = city
 
-      const lat = state.geolocation[state.currentCity].lat
-      const lon = state.geolocation[state.currentCity].lon
+      if (Object.keys(state.geolocation).includes(state.currentCity)) {
+        state.showWarning = false
+        const lat = state.geolocation[state.currentCity].lat
+        const lon = state.geolocation[state.currentCity].lon
 
-      if (state.makeLiveAPIcall) {
-        // Wait for both current & forecast weather APIs to resolve
-        Promise.all([
-          fetch(
-            `${state.weather_url_base}weather?q=${state.currentCity}&units=metric&appid=${state.api_key}`
-          ),
-          fetch(
-            `${state.forecast_url_base}onecall?lat=${lat}&lon=${lon}&units=metric&appid=${state.api_key}`
-          )
-        ])
-          // Get a JSON objec from each of the responses
-          .then(responses =>
-            Promise.all(responses.map(response => response.json()))
-          )
-          .then(setResults)
+        if (state.makeLiveAPIcall) {
+          // Wait for both current & forecast weather APIs to resolve
+          Promise.all([
+            fetch(
+              `${state.weather_url_base}weather?q=${state.currentCity}&units=metric&appid=${state.api_key}`
+            ),
+            fetch(
+              `${state.forecast_url_base}onecall?lat=${lat}&lon=${lon}&units=metric&appid=${state.api_key}`
+            )
+          ])
+            // Get a JSON objec from each of the responses
+            .then(responses =>
+              Promise.all(responses.map(response => response.json()))
+            )
+            .then(setResults)
+        } else {
+          console.log('DEV MODE enabled — API calls not made')
+          setResults(mockResponse)
+        }
+
+        state.query = ''
       } else {
-        console.log('DEV MODE enabled — API calls not made')
-        setResults(mockResponse)
+        state.showWarning = true
       }
-      state.query = ''
     }
 
     const searchWeather = e => {
@@ -268,5 +283,17 @@ main.warm {
 }
 .refresh-box {
   text-align: center;
+}
+.alert-warning {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+}
+.alert {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
 }
 </style>
