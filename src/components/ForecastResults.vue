@@ -29,6 +29,14 @@
       <ul>
         <li v-for="n in 5" :key="n">
           <span>{{ Math.round(forecast.hourly[n].temp) }}°</span>
+          <div class="percent-rain">
+            {{
+              typeof forecast.hourly[n].rain != 'undefined' &&
+              forecast.hourly[n].rain['1h'] != 0
+                ? `${Math.round(forecast.hourly[n].rain['1h'] * 100)}%`
+                : '0%'
+            }}
+          </div>
           <img :src="getWeatherIcon(forecast.hourly[n].weather[0].icon)" />
           <span>{{ getFormattedTime(forecast.hourly[n].dt) }}</span>
         </li>
@@ -70,6 +78,10 @@ export default {
     forecast: { type: {}, required: false }
   },
   methods: {
+    formatRainHour(rain1h) {
+      console.log(rain1h)
+      return rain1h != 0 ? 100 * rain1h : 0
+    },
     getWeatherIcon(icon) {
       // append @2x to double the size
       return `https://openweathermap.org/img/wn/${icon}.png`
@@ -244,5 +256,8 @@ h2 {
   color: #fff;
   text-align: right;
   margin-top: 5px;
+}
+.percent-rain {
+  color: #add8e6;
 }
 </style>
